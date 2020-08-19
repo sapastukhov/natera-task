@@ -44,12 +44,9 @@ public class PostTriangleTests extends Fixture {
                 {"5;7;7","5.0","7.0","7.0"},
                 {"7;7;7","7.0","7.0","7.0"},
                 {"2;3;4","2.0","3.0","4.0"},
-                {"2147483647;2147483647;1","2.147483647E9","2.147483647E9","1.0"},
-                {"2147483647;1;2147483647","2.147483647E9","1.0","2.147483647E9"},
-                {"1;2147483647;2147483647","1.0","2.147483647E9","2.147483647E9"},
-                {"4294967295;4294967295;1","4.294967295E9","4.294967295E9","1.0"},
-                {"4294967295;1;4294967295","4.294967295E9","1.0","4.294967295E9"},
-                {"1;4294967295;4294967295","1.0","4.294967295E9","4.294967295E9"},
+                {"9.9e+76;9.9e+76;1"},
+                {"1;9.9e+76;9.9e+76"},
+                {"9.9e+76;1;9.9e+76"},
                 {"4.0;4.0;7","4.0","4.0","7.0"},
                 {"4.0;7;4.0","4.0","7.0","4.0"},
                 {"7;4.0;4.0","7.0","4.0","4.0"},
@@ -61,7 +58,7 @@ public class PostTriangleTests extends Fixture {
                 {"3;-1;3","3.0","1.0","3.0"},
                 {"0.3;0.3;0.5","0.3","0.3","0.5"},
                 {"0.3;0.5;0.3","0.3","0.5","0.3"},
-                {"0.5;0.3;0.3","0.5","0.3","0.3"},
+                {"0.5;0.3;0.3","0.5","0.3","0.3"}
         };
     }
 
@@ -86,7 +83,11 @@ public class PostTriangleTests extends Fixture {
                 {"1"},
                 {""},
                 {"A;B;C"},
+                {"%;/;?"},
                 {"06;003;01"},
+                {"1e+77;1e+77;1"},
+                {"1;1e+77;1e+77"},
+                {"1e+77;1;1e+77"}
         };
     }
 
@@ -128,6 +129,11 @@ public class PostTriangleTests extends Fixture {
         TriangleDto triangleDto = given().basePath("/triangle").body("{\"input\":\"2;3;4\"}").post().then().statusCode(200).extract().response().as(TriangleDto.class);
         assertThat(triangleDto).as("Triangle values").extracting("firstSide", "secondSide", "thirdSide")
                 .containsExactly("2.0", "3.0", "4.0");
+    }
+
+    @Test(description = "Receiving 'Bad request' when creating triangle with empty 'separator' field")
+    public void creatingTriangleWithEmptySeparatorField(){
+        given().basePath("/triangle").body("{\"separator\":\"\", \"input\":\"233243\"}").post().then().statusCode(400);
     }
 
     @Test(description = "Returning 'Bad request' when creating triangle without mandatory 'input' field")
