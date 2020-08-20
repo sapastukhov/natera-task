@@ -52,12 +52,27 @@ public class TriangleController {
 
     @Step("Get triangle by incorrect id {triangleId}")
     public static ErrorDto getByIncorrectId(String triangleId){
+        return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}").then().statusCode(400).extract().response().as(ErrorDto.class);
+    }
+
+    @Step("Get triangle by not exist id {triangleId}")
+    public static ErrorDto getByNotExistId(String triangleId){
         return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}").then().statusCode(404).extract().response().as(ErrorDto.class);
     }
 
     @Step("Delete triangle by id {triangleId}")
     public static void deleteById(String triangleId){
         given().basePath(URL).pathParam("triangleId", triangleId).delete("/{triangleId}").then().statusCode(200);
+    }
+
+    @Step("Delete triangle by incorrect id {triangleId}")
+    public static ErrorDto deleteByIncorrectId(String triangleId){
+        return given().basePath(URL).pathParam("triangleId", triangleId).delete("/{triangleId}").then().statusCode(400).extract().response().as(ErrorDto.class);
+    }
+
+    @Step("Delete triangle by not exist id {triangleId}")
+    public static ErrorDto deleteByNotExistId(String triangleId){
+        return given().basePath(URL).pathParam("triangleId", triangleId).delete("/{triangleId}").then().statusCode(404).extract().response().as(ErrorDto.class);
     }
 
     @Step("Get all triangles")
@@ -77,6 +92,12 @@ public class TriangleController {
     @Step("Get triangle perimeter by incorrect id {triangleId}")
     public static ErrorDto getPerimeterByIncorrectId(String triangleId){
         return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}/perimeter")
+                .then().statusCode(400).extract().response().as(ErrorDto.class);
+    }
+
+    @Step("Get triangle perimeter by not exist id {triangleId}")
+    public static ErrorDto getPerimeterByNotExistId(String triangleId){
+        return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}/perimeter")
                 .then().statusCode(404).extract().response().as(ErrorDto.class);
     }
 
@@ -90,6 +111,12 @@ public class TriangleController {
 
     @Step("Get triangle area by incorrect id {triangleId}")
     public static ErrorDto getAreaByIncorrectId(String triangleId){
+        return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}/area")
+                .then().statusCode(400).extract().response().as(ErrorDto.class);
+    }
+
+    @Step("Get triangle area by not exist id {triangleId}")
+    public static ErrorDto getAreaByNotExistId(String triangleId){
         return given().basePath(URL).pathParam("triangleId", triangleId).get("/{triangleId}/area")
                 .then().statusCode(404).extract().response().as(ErrorDto.class);
     }

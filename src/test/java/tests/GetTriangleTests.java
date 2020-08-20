@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,23 +63,38 @@ public class GetTriangleTests extends Fixture {
                 .containsExactly("2.0", "3.0", "4.0");
     }
 
-    @Test(description = "Not found error when try to get triangle by incorrect id")
+    @Test(description = "Bad Request error when try to get triangle by incorrect id")
     public void getTriangleByIncorrectId(){
-        ErrorDto errorDto = TriangleController.getByIncorrectId("1");
+        TriangleController.getByIncorrectId("1");
+    }
+
+    @Test(description = "Not found error when try to get triangle by not exist id")
+    public void getTriangleByNotExistId(){
+        ErrorDto errorDto = TriangleController.getByNotExistId(UUID.randomUUID().toString());
         assertThat(errorDto).extracting("status", "error", "exception", "message")
                 .containsExactly(404, "Not Found", "com.natera.test.triangle.exception.NotFounException", "Not Found");
     }
 
-    @Test(description = "Not found error when try to get triangle perimeter by incorrect id")
+    @Test(description = "Bad request error when try to get triangle perimeter by incorrect id")
     public void getTrianglePerimeterByIncorrectId(){
-        ErrorDto errorDto = TriangleController.getPerimeterByIncorrectId("1");
+        TriangleController.getPerimeterByIncorrectId("132-23");
+    }
+
+    @Test(description = "Bad request error when try to get triangle area by incorrect id")
+    public void getTriangleAreaByIncorrectId(){
+        TriangleController.getAreaByIncorrectId("1232-23");
+    }
+
+    @Test(description = "Not found error when try to get triangle perimeter by not exist id")
+    public void getTrianglePerimeterByNotExistId(){
+        ErrorDto errorDto = TriangleController.getPerimeterByNotExistId(UUID.randomUUID().toString());
         assertThat(errorDto).extracting("status", "error", "exception", "message")
                 .containsExactly(404, "Not Found", "com.natera.test.triangle.exception.NotFounException", "Not Found");
     }
 
-    @Test(description = "Not found error when try to get triangle area by incorrect id")
-    public void getTriangleAreaByIncorrectId(){
-        ErrorDto errorDto = TriangleController.getAreaByIncorrectId("1");
+    @Test(description = "Not found error when try to get triangle area by not exist id")
+    public void getTriangleAreaByNotExistId(){
+        ErrorDto errorDto = TriangleController.getAreaByNotExistId(UUID.randomUUID().toString());
         assertThat(errorDto).extracting("status", "error", "exception", "message")
                 .containsExactly(404, "Not Found", "com.natera.test.triangle.exception.NotFounException", "Not Found");
     }
